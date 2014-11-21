@@ -1,0 +1,23 @@
+from pandas import DataFrame,Series
+import pandas as pd ; import numpy as np ; import matplotlib as plt
+
+#导入文件,转换为DataFrame格式
+hotel_433 = pd.read_csv(r'F:\test\433.csv',index_col=0,header=0)
+hotel_434 = pd.read_csv(r'F:\test\434.csv',index_col=0,header=0)
+hotel_all = pd.read_csv(r'F:\test\all.csv',index_col=0,header=0)
+
+#合并文件
+hotel_concat = pd.concat([hotel_433,hotel_434])
+
+#比对合并后文件与所有订单,找出差异项的index
+list1 = []
+for i in hotel_all.index:
+    if i in hotel_concat.index:
+        continue
+    else:
+        list1.append(i)
+
+hotel_chayi = DataFrame(hotel_all,index=list1)
+
+#根据差异项的index,从所有订单表中找出差异项明细
+hotel_compare = DataFrame(hotel_all.loc[:,['RefId','income']])
