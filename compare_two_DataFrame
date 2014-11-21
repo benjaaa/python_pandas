@@ -10,14 +10,19 @@ hotel_all = pd.read_csv(r'F:\test\all.csv',index_col=0,header=0)
 hotel_concat = pd.concat([hotel_433,hotel_434])
 
 #比对合并后文件与所有订单,找出差异项的index
+'''
+#方法1利用循环比对index
 list1 = []
 for i in hotel_all.index:
     if i in hotel_concat.index:
         continue
     else:
         list1.append(i)
-
 hotel_chayi = DataFrame(hotel_all,index=list1)
+'''
+#方法2,利用isin函数查找是否包含
+houtel_chayi = hotel_all[-(hotel_all.index.isin(hotel_concat.index))]
+
 
 #根据差异项的index,从所有订单表中找出差异项明细
 hotel_compare = DataFrame(hotel_all.loc[:,['RefId','income']])
